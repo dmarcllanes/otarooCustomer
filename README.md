@@ -44,5 +44,16 @@ start the ASGI application with the production command above. The page uses
 root-relative `/site/` and `/assets/` URLs, so deploy at a domain root and keep both
 directories available to the app.
 
+### Vercel
+
+Vercel's Python runtime detects the ASGI app through the top-level `app` variable in
+`main.py`. Its filesystem is read-only except `/tmp`, so on Vercel the app keeps
+FastHTML's session key file in `/tmp`. The site does not use sessions, but you can set
+a stable key with this optional environment variable:
+
+- `SESSION_SECRET_KEY` (secret, optional): the FastHTML session signing key. If it is
+  unset, a key is generated and stored in `.sesskey` locally or `/tmp/.sesskey` on
+  Vercel.
+
 The public domain is not configured in this repository. If you add an Open Graph
 image preview, use its fully qualified production HTTPS URL in `site/index.html`.
